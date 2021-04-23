@@ -1,7 +1,7 @@
 # Modern CMake
 cmake_minimum_required(VERSION 3.18)
 
-project(IXWebSocket_template)
+project(performance_meter)
 
 # Add module path for dependencies
 list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -18,12 +18,9 @@ include(ixwebsocket)
 set(CMAKE_FOLDER "")
 
 add_executable(${PROJECT_NAME}
-    ws_client.cpp
+    src/main.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ixwebsocket
 )
-
-# Set Visual Studio startup project
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
