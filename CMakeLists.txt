@@ -21,6 +21,8 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/graphic)
 
 add_executable(${PROJECT_NAME}
     src/graphic/sender.cpp
+    src/graphic/receiver.cpp
+    src/graphic/utilities.cpp
     src/main.cpp
 )
 
