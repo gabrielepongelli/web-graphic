@@ -15,7 +15,7 @@ graphic::WebGraphic::WebGraphic(graphic::Type t)
 
     withDeviation = (t == Type::LOGARITMIC_WITH_DEVIATION || t == Type::WITH_DEVIATION);
 
-    usleep(100000);    // Wait 100 ms for the connection
+    //usleep(200000);    // Wait 200 ms for the connection
     specifyGraphicType(t);
 }
 
@@ -84,7 +84,7 @@ void graphic::WebGraphic::sendNewLineType(std::string name, graphic::Color c)
             + std::to_string(c.r) + "," 
             + std::to_string(c.g) + ","
             + std::to_string(c.b) + ","
-            + std::to_string((double)c.a * 100.0 / 255.0) + ")";
+            + std::to_string((double)c.a / 255.0) + ")";
     
     s.send(newLine.dump());
 
@@ -96,7 +96,7 @@ void graphic::WebGraphic::sendNewLineType(std::string name, graphic::Color c)
                 "type": "rangeArea",
                 "color": "",
                 "connectNullData": true,
-                "showInLegend": true,
+                "showInLegend": false,
                 "dataPoints": []
             }
         )"_json;
@@ -129,10 +129,12 @@ void graphic::WebGraphic::addRecord(graphic::Record r, std::string l)
 
     auto newRecord = R"(
         {
+            "name": "",
             "x": 0.0,
             "y": 0.0
         }
     )"_json;
+    newRecord["name"] = l;
     newRecord["x"] = r.xValue;
     newRecord["y"] = r.yValue;
     s.send(newRecord.dump());
@@ -141,10 +143,12 @@ void graphic::WebGraphic::addRecord(graphic::Record r, std::string l)
     {
         newRecord = R"(
             {
+                "name": "",
                 "x": 0.0,
                 "y": []
             }
         )"_json;
+        newRecord["name"] = l + " Deviation";
         newRecord["x"] = r.xValue;
         newRecord["y"][0] = r.yValue + r.deviation;
         newRecord["y"][1] = r.yValue - r.deviation;
