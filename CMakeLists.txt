@@ -14,6 +14,7 @@ include(CPM)
 include(zlib)
 include(mbedtls)
 include(ixwebsocket)
+include(json)
 
 set(CMAKE_FOLDER "")
 
@@ -23,9 +24,13 @@ add_executable(${PROJECT_NAME}
     src/graphic/sender.cpp
     src/graphic/receiver.cpp
     src/graphic/utilities.cpp
+    src/graphic/web_graphic.cpp
     src/main.cpp
 )
 
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_${CMAKE_CXX_STANDARD})
+
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ixwebsocket
+    nlohmann_json::nlohmann_json
 )
