@@ -93,7 +93,7 @@ void graphic::Sender::setCallback()
 void graphic::Sender::initializeServer(int port)
 {
     server = std::make_unique<ix::WebSocketServer>(port, ix::SocketServer::kDefaultHost, 
-            ix::SocketServer::kDefaultTcpBacklog, 2);
+            ix::SocketServer::kDefaultTcpBacklog, 1);
     setCallback();
 }
 
