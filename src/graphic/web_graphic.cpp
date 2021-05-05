@@ -102,7 +102,7 @@ void graphic::WebGraphic::sendNewLineType(std::string name, graphic::Color c)
             + std::to_string(c.r) + "," 
             + std::to_string(c.g) + ","
             + std::to_string(c.b) + ","
-            + std::to_string(((double)c.a * 100.0 / 255.0) - 0.4) + ")";
+            + std::to_string(((double)c.a / 255.0) - 0.5) + ")";
         s.send(newLine.dump());
     }
 }
