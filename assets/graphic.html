@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+		<title>Web Graphic</title>
+        <style>
+            html {
+                font-family: Arial;
+            }
+            #chartContainer {
+                display: grid; 
+                grid-template-columns: min-content 1fr; 
+                grid-template-rows: min-content 1fr min-content;
+                grid-gap: 0px; 
+                grid-template-areas: "graphic"
+                                     "scale dev"; 
+                height: 80vh;
+                width: 95%;
+            }
+            #chartContainer {
+                grid-area: graphic;
+                text-align: center;
+                margin-left: 2%;
+            }
+            #scale-container {
+                grid-area: scale;
+                text-align: left;
+                position: fixed;
+                bottom: 10%;
+                left: 20%;
+            }
+            #deviation-container {
+                grid-area: dev;
+                text-align: right;
+                position: fixed;
+                bottom: 10%;
+                right: 20%;
+            }
+        </style>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	</head>
+	<body>
+		<div>
+			<div id="chartContainer"></div>
+			<div style="position: fixed; top: 70%; left: 40%;">
+                <div id="scale-container">
+                    <label for="scale">Logaritmic Scale: </label>
+				    <button id="scale">Change Scale</button>
+                </div><br>
+                <div id="deviation-container">
+                    <label for="deviation">Deviation: </label>
+				    <button id="deviation">Hide</button>
+                </div>
+			</div>
+		</div>
+        <script src="receiver.js"></script>
+	</body>
+</html>
