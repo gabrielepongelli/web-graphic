@@ -1,17 +1,17 @@
 #pragma once
 
+#include "../utilities/shared_queue.hpp"
+
 #ifdef _WIN32
     #include <ixwebsocket/IXNetSystem.h>
 #endif
 #include <ixwebsocket/IXWebSocketServer.h>
 #include <memory>
-#include <exception>
+#include <string>
 
 namespace graphic
 {
     #define DEFAULT_PORT 8888
-
-    class NotConnectedException;
 
     /**
      * A Sender object is responsible for communications with the client.
@@ -21,7 +21,6 @@ namespace graphic
         public:
             /**
              * @param port: port that this sender have to use. Must be > 0.
-             * @throws invalid_argument if the value of port is <= 0.
              */
             Sender(int port=DEFAULT_PORT);
             ~Sender();
@@ -35,7 +34,6 @@ namespace graphic
             /**
              * Send data to the receiver.
              * @param data: data to be sent to the receiver.
-             * @throws NotConnectedException if the receiver is not connected.
              */
             void send(std::string data);
         
@@ -43,6 +41,9 @@ namespace graphic
             // Represent the connection with the client.
             ix::WebSocket *connection;
             std::unique_ptr<ix::WebSocketServer> server;
+
+            // Represent the ordered list of messages to be sent when a Receiver connects
+            SharedQueue<std::string> messageHistory;
             #ifdef _WIN32
             // Represent the number of instances of Sender in use.
             static int instance_number;
@@ -77,17 +78,4 @@ namespace graphic
             void stopServer();
     };
 
-    /**
-     * This exception is thrown when a Sender object try to send some data to a 
-     * Receiver object without an open connection.
-     */
-    class NotConnectedException: public std::runtime_error
-    {
-        public:
-            NotConnectedException(const std::string &what_arg) 
-                    : std::runtime_error(what_arg) { };
-            
-            NotConnectedException(const char* what_arg) 
-                    : std::runtime_error(what_arg) { };
-    };
 }

@@ -4,7 +4,7 @@
 int graphic::Sender::instance_number = 0;
 #endif
 
-graphic::Sender::Sender(int port) : connection{nullptr}
+graphic::Sender::Sender(int port) : connection{nullptr}, messageHistory{}
 {
     if (port <= 0)
     {
@@ -56,8 +56,10 @@ void graphic::Sender::closeConnection()
 
 void graphic::Sender::setCallback()
 {
+    SharedQueue<std::string>* messageHistoryRef = &(this->messageHistory);
+
     // Set the actions to perform when the server receive a message
-    server->setOnClientMessageCallback([this](std::shared_ptr<ix::ConnectionState> connectionState,
+    server->setOnClientMessageCallback([this, messageHistoryRef](std::shared_ptr<ix::ConnectionState> connectionState,
             ix::WebSocket &webSocket, const ix::WebSocketMessagePtr &msg)
     {
         
@@ -67,6 +69,16 @@ void graphic::Sender::setCallback()
             if (!this->isConnected())
             {
                 connection = &webSocket;
+            }
+            
+            int messagesToSend = messageHistoryRef->size();
+            if (messagesToSend > 0)
+            {
+                for (int i = 0; i < messagesToSend; i++)
+                {
+                    webSocket.send(messageHistoryRef->front());
+                    messageHistoryRef->pop();
+                }
             }
         }
         // If the message is about closing the connection..
@@ -80,7 +92,8 @@ void graphic::Sender::setCallback()
 
 void graphic::Sender::initializeServer(int port)
 {
-    server = std::make_unique<ix::WebSocketServer>(port);
+    server = std::make_unique<ix::WebSocketServer>(port, ix::SocketServer::kDefaultHost, 
+            ix::SocketServer::kDefaultTcpBacklog, 2);
     setCallback();
 }
 
@@ -94,12 +107,14 @@ void graphic::Sender::startServer(int port)
 
 void graphic::Sender::send(std::string data)
 {
-    if (connection == nullptr)
+    if (connection != nullptr && messageHistory.empty())
     {
-        throw NotConnectedException("There is no Receiver connected with this Sender!");
+        connection->send(data);
     }
-
-    connection->send(data);
+    else
+    {
+        messageHistory.push(data);
+    }
 }
 
 bool graphic::Sender::isConnected()
