@@ -18,12 +18,10 @@ include(json)
 
 set(CMAKE_FOLDER "")
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/graphic)
-
 add_executable(${PROJECT_NAME}
     src/graphic/sender.cpp
     src/graphic/receiver.cpp
-    src/graphic/utilities.cpp
+    src/utilities/string_utilities.cpp
     src/graphic/web_graphic.cpp
     src/main.cpp
 )
