@@ -1,12 +1,11 @@
 #include "../../includes/graphic/web_graphic.hpp"
 
-#include <unistd.h>
 #include <nlohmann/json.hpp>
 
 std::string graphic::WebGraphic::client_path = "../assets/graphic.html";
 
-graphic::WebGraphic::WebGraphic(graphic::Type t)
-            : s{}, lines{}
+graphic::WebGraphic::WebGraphic(std::string title, std::string xName, std::string yName, 
+            graphic::Type t) : s{}, lines{}
 {
     if (!Receiver::startReceiver(client_path))
     {
@@ -15,17 +14,12 @@ graphic::WebGraphic::WebGraphic(graphic::Type t)
 
     withDeviation = (t == Type::LOGARITMIC_WITH_DEVIATION || t == Type::WITH_DEVIATION);
 
-    //usleep(200000);    // Wait 200 ms for the connection
-    specifyGraphicType(t);
+    specifyGraphicProperties(title, xName, yName, t);
 }
 
-void graphic::WebGraphic::specifyGraphicType(graphic::Type t)
+void graphic::WebGraphic::specifyGraphicProperties(std::string title, std::string xName, 
+            std::string yName, graphic::Type t)
 {
-    if (!s.isConnected())
-    {
-        return;
-    }
-
     std::string type;
     switch (t)
     {
@@ -43,16 +37,24 @@ void graphic::WebGraphic::specifyGraphicType(graphic::Type t)
             break;
     }
 
-    s.send(type);
+    auto properties = R"(
+        {
+            "title": "",
+            "xName": "",
+            "yName": "",
+            "type": ""
+        }
+    )"_json;
+    properties["title"] = title;
+    properties["xName"] = xName;
+    properties["yName"] = yName;
+    properties["type"] = type;
+
+    s.send(properties.dump());
 }
 
 void graphic::WebGraphic::addLine(std::string name, graphic::Color c)
 {
-    if (name.empty())
-    {
-        throw InvalidLineNameException("The name specified is empty!");
-    }
-
     if (lines.find(name) != lines.end())
     {
         throw InvalidLineNameException("The name " + name + " is already in use!");
@@ -64,11 +66,6 @@ void graphic::WebGraphic::addLine(std::string name, graphic::Color c)
 
 void graphic::WebGraphic::sendNewLineType(std::string name, graphic::Color c)
 {
-    if (!s.isConnected())
-    {
-        return;
-    }
-
     auto newLine = R"(
         {
             "name": "",
@@ -117,11 +114,6 @@ auto graphic::WebGraphic::getLines() const
 
 void graphic::WebGraphic::addRecord(graphic::Record r, std::string l)
 {
-    if (!s.isConnected())
-    {
-        return;
-    }
-
     if (lines.find(l) == lines.end())
     {
         throw InvalidLineNameException("Could not find a line in the graphic with name: " + l);
@@ -154,4 +146,55 @@ void graphic::WebGraphic::addRecord(graphic::Record r, std::string l)
         newRecord["y"][1] = r.yValue - r.deviation;
         s.send(newRecord.dump());
     }
+}
+
+graphic::WebGraphicBuilder::WebGraphicBuilder() : title{""}, xName{""}, yName{""}, 
+            type{Type::STANDARD}, lines{}, lineTitles{} { };
+
+graphic::WebGraphicBuilder& graphic::WebGraphicBuilder::ofType(Type t)
+{
+    type = t;
+    return *this;
+}
+
+graphic::WebGraphicBuilder& graphic::WebGraphicBuilder::withTitle(std::string title)
+{
+    this->title = title;
+    return *this;
+}
+
+graphic::WebGraphicBuilder& graphic::WebGraphicBuilder::withXName(std::string name)
+{
+    xName = name;
+    return *this;
+}
+
+graphic::WebGraphicBuilder& graphic::WebGraphicBuilder::withYName(std::string name)
+{
+    yName = name;
+    return *this;
+}
+
+graphic::WebGraphicBuilder& graphic::WebGraphicBuilder::withLine(std::string name, graphic::Color c)
+{
+    if (lineTitles.find(name) != lineTitles.end())
+    {
+        throw InvalidLineNameException("The name " + name + " is already in use!");
+    }
+
+    lineTitles.emplace(name);
+    lines.emplace_back(name, c);
+    return *this;
+}
+
+graphic::WebGraphic* graphic::WebGraphicBuilder::build()
+{
+    WebGraphic *result = new WebGraphic(title, xName, yName, type);
+
+    for (auto line : lines)
+    {
+        result->addLine(line.first, line.second);
+    }
+
+    return result;
 }
