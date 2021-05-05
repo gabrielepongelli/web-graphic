@@ -1,4 +1,4 @@
-#include "../../includes/graphic/utilities.hpp"
+#include "../../includes/utilities/string_utilities.hpp"
 
 std::string replaceAll(std::string s, char c, std::string r)
 {
