@@ -31,6 +31,7 @@ A simple c++ library to create and manage real-time line graphic.
     </ol>
 </details>
 <br>
+
 ## About The Project
 
 This is a little project that allows to create a simple and easy-to-use line graphic through c++ which will be updated in real-time. The graphic will be displayed inside the local browser. More specifically it allows to:
@@ -52,6 +53,7 @@ This project is built using:
 
 
 <br>
+
 ## Getting Started
 
 The code of this project is compatible with Linux, MacOS and Windows.
@@ -83,6 +85,7 @@ To be able to use this project you need:
 
 
 <br>
+
 ## Usage
 
 After completing the [installation procedure](#installation) you can modify the code changing the project name in the CMakeLists.txt file and add your personal source and header files. Remember to add the source files also in the CMakeLists.txt file!
@@ -104,6 +107,7 @@ To make use of the library you will use the WebGraphic class located inside `inc
 
 
 <br>
+
 ## Example
 
 This is an example for a basic usage:
@@ -146,6 +150,7 @@ int main()
 
 
 <br>
+
 ## Notes
 
 ### Logarithmic scale
