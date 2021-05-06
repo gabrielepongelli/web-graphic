@@ -23,7 +23,7 @@ add_executable(${PROJECT_NAME}
     src/graphic/receiver.cpp
     src/utilities/string_utilities.cpp
     src/graphic/web_graphic.cpp
-    src/main.cpp
+    example.cpp
 )
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_${CMAKE_CXX_STANDARD})
