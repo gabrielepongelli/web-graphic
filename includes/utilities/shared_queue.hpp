@@ -5,7 +5,7 @@
 #include <condition_variable>
 
 /**
- * A shared queue is a queue that is thread safe.
+ * A shared queue is a queue implemented to be thread safe.
  */
 template <typename T>
 class SharedQueue

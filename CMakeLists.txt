@@ -1,6 +1,6 @@
 # Modern CMake
 cmake_minimum_required(VERSION 3.18)
-project(performance_meter)
+project(webgraphic)
 
 # Add module path for dependencies
 list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)

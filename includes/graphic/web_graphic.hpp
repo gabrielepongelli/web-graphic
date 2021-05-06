@@ -93,7 +93,7 @@ namespace graphic
              * @param t: type of the graphic. If not specified it will be created
              *      of type STANDARD.
              * @throws ErrorStartingReceiverException if there is an error on 
-             *      starting the Receiver.
+             *      starting the Receiver. In this case the WebGraphic won't be created.
              */
             WebGraphic(std::string title, std::string xName, std::string yName, 
                     Type t = Type::STANDARD);
