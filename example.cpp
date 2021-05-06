@@ -1,6 +1,6 @@
 #include <unistd.h>
 
-#include "../includes/graphic/web_graphic.hpp"
+#include "includes/graphic/web_graphic.hpp"
 
 int main()
 {
