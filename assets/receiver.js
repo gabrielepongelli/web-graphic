@@ -4,6 +4,8 @@ var reconnectionAttempts;
 var chart;
 var first = true;
 var lines = [];
+var log = true;
+var dev = true;
 
 function firstTimeExecuted() {
     first = false;
@@ -63,15 +65,17 @@ function refreshChart() {
 }
 
 function hideElements(type) {
-    var log = (type == "standard logaritmic") || (type == "logaritmic with deviation");
-    var dev = (type == "with deviation") || (type == "logaritmic with deviation");
+    log = (type == "standard logaritmic") || (type == "logaritmic with deviation");
+    dev = (type == "with deviation") || (type == "logaritmic with deviation");
     
     if (!log) {
-        document.getElementById("scale-container").style.display = "none";
+        $("#scale").prop("disabled", true);
+        $("#scale-label").css("color", "#9c9c9c");
     }
 
     if (!dev) {
-        document.getElementById("deviation-container").style.display = "none";
+        $("#deviation").prop("disabled", true);
+        $("#deviation-label").css("color", "#9c9c9c");
     }
 }
 
@@ -104,34 +108,36 @@ function addRecord(parsed) {
 }
 
 function changeScale() {
-    var log = chart.options.axisX.logarithmic;
+    if (log) {
+        var isEnabled = chart.options.axisX.logarithmic;
     
-    chart.options.axisX.logarithmic = !log;
-    chart.options.axisY.logarithmic = !log;
-    chart.data = lines;
+        chart.options.axisX.logarithmic = !isEnabled;
+        chart.options.axisY.logarithmic = !isEnabled;
+        chart.data = lines;
 
-    chart.render();
-    console.log(chart.data[0].visible);
-    //console.log(chart.options.axisY.logarithmic);
+        chart.render();
+    }
 }
 
 function changeDeviationVisibility() {
-    var text = document.getElementById("deviation").textContent;
+    if (dev) {
+        var text = $("#deviation").text();
 
-    if (text == "Show") {
-        document.getElementById("deviation").textContent = "Hide";
-    } else {
-        document.getElementById("deviation").textContent = "Show";
-    }
-
-    lines.forEach(function(value) {
-        if (value.name.indexOf("Deviation") != -1) {
-            value.visible = !value.visible;
+        if (text == "Show") {
+            $("#deviation").text("Hide");
+        } else {
+            $("#deviation").text("Show");
         }
-    });
 
-    chart.data = lines;
-    chart.render();
+        lines.forEach(function(value) {
+            if (value.name.indexOf("Deviation") != -1) {
+                value.visible = !value.visible;
+            }
+        });
+
+        chart.data = lines;
+        chart.render();
+    }
 }
 
 function tryToReconnect(port) {
@@ -187,6 +193,6 @@ window.onload = function() {
     initChart();
     chart.render();
 
-    document.getElementById("scale").onclick = changeScale;
-    document.getElementById("deviation").onclick = changeDeviationVisibility;
+    $("#scale").click(changeScale);
+    $("#deviation").click(changeDeviationVisibility);
 }

@@ -4,10 +4,15 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
 		<title>Web Graphic</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <style>
             html {
                 font-family: Arial;
             }
+            label {
+                font-size: 150%;
+                margin-right: 10px;
+            } 
             #chartContainer {
                 display: grid; 
                 grid-template-columns: min-content 1fr; 
@@ -44,16 +49,19 @@
 		<div>
 			<div id="chartContainer"></div>
 			<div style="position: fixed; top: 70%; left: 40%;">
-                <div id="scale-container">
-                    <label for="scale">Logaritmic Scale: </label>
-				    <button id="scale">Change Scale</button>
+                <div id="scale-container" class="container-fluid">
+                    <label id="scale-label" for="scale">Logaritmic Scale: </label>
+				    <button id="scale" type="button" class="btn btn-primary">Change Scale</button>
                 </div><br>
                 <div id="deviation-container">
-                    <label for="deviation">Deviation: </label>
-				    <button id="deviation">Hide</button>
+                    <label id="deviation-label" for="deviation">Deviation: </label>
+				    <button id="deviation" type="button" class="btn btn-primary btn-work" aria-disabled="false">Hide</button>
                 </div>
 			</div>
 		</div>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script src="receiver.js"></script>
 	</body>
 </html>
