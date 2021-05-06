@@ -89,7 +89,8 @@ function storeUserPreferences(pref) {
 }
 
 function addNewLine(line) {
-    line.visible = true;
+    line.visible = line.type != "rangeArea";
+
     lines.push(line);
     chart.data = lines;
 }
@@ -122,15 +123,17 @@ function changeScale() {
 function changeDeviationVisibility() {
     if (dev) {
         var text = $("#deviation").text();
+        var width = $("#deviation").css("width");
 
         if (text == "Show") {
             $("#deviation").text("Hide");
         } else {
             $("#deviation").text("Show");
         }
+        $("#deviation").css("width", width);
 
         lines.forEach(function(value) {
-            if (value.name.indexOf("Deviation") != -1) {
+            if (value.type == "rangeArea") {
                 value.visible = !value.visible;
             }
         });
