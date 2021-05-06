@@ -87,6 +87,13 @@ void graphic::WebGraphic::sendNewLineType(std::string name, graphic::Color c)
 
     if (withDeviation)
     {
+        double deviationOpacity = ((double)c.a / 255.0) - 0.5;
+
+        if (deviationOpacity <= 0)
+        {
+            deviationOpacity = 0.1;
+        }
+
         newLine = R"(
             {
                 "name": "",
@@ -102,7 +109,7 @@ void graphic::WebGraphic::sendNewLineType(std::string name, graphic::Color c)
             + std::to_string(c.r) + "," 
             + std::to_string(c.g) + ","
             + std::to_string(c.b) + ","
-            + std::to_string(((double)c.a / 255.0) - 0.5) + ")";
+            + std::to_string(deviationOpacity) + ")";
         s.send(newLine.dump());
     }
 }
