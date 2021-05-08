@@ -68,7 +68,7 @@ To be able to use this project you need:
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/gabrielepongelli/web-graphic.git
+   git clone https://github.com/gabrielepongelli/web-graphic.git && cd web-graphic
    ```
 2. Create a build directory
    ```sh

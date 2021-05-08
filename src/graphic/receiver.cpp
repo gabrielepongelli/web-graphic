@@ -10,7 +10,7 @@ bool graphic::Receiver::startReceiver(std::string receiver_path)
     std::string cmd = "gnome-open \'" + bashEncode(receiver_path) + "\'";
     result = system(cmd.c_str());
 #elif _WIN32
-    std::string cmd = "start \'" + bashEncode(receiver_path) + "\'";
+    std::string cmd = "start " + bashEncode(receiver_path);
     result = system(cmd.c_str());
 #endif
 
