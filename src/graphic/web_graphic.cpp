@@ -5,7 +5,7 @@
 #ifndef _WIN32
 std::string graphic::WebGraphic::client_path = "../assets/graphic.html";
 #else
-std::string graphic::WebGraphic::client_path = "..\\assets\\graphic.html";
+std::string graphic::WebGraphic::client_path = "..\\..\\assets\\graphic.html";
 #endif
 
 graphic::WebGraphic::WebGraphic(std::string title, std::string xName, std::string yName, 
